@@ -20,7 +20,7 @@ const History = () => {
               <td>20 minutos</td>
               <td>Há 2 meses</td>
               <td>
-                <Status statusColor="green">Concluido</Status>
+                <Status statuscolor="green">Concluido</Status>
               </td>
             </tr>
             <tr>
@@ -28,7 +28,7 @@ const History = () => {
               <td>20 minutos</td>
               <td>Há 2 meses</td>
               <td>
-                <Status statusColor="green">Concluido</Status>
+                <Status statuscolor="green">Concluido</Status>
               </td>
             </tr>
             <tr>
@@ -36,7 +36,7 @@ const History = () => {
               <td>20 minutos</td>
               <td>Há 2 meses</td>
               <td>
-                <Status statusColor="green">Concluido</Status>
+                <Status statuscolor="green">Concluido</Status>
               </td>
             </tr>
             <tr>
@@ -44,7 +44,7 @@ const History = () => {
               <td>20 minutos</td>
               <td>Há 2 meses</td>
               <td>
-                <Status statusColor="green">Concluido</Status>
+                <Status statuscolor="green">Concluido</Status>
               </td>
             </tr>
             <tr>
@@ -52,7 +52,7 @@ const History = () => {
               <td>20 minutos</td>
               <td>Há 2 meses</td>
               <td>
-                <Status statusColor="green">Concluido</Status>
+                <Status statuscolor="green">Concluido</Status>
               </td>
             </tr>
             <tr>
@@ -60,7 +60,7 @@ const History = () => {
               <td>20 minutos</td>
               <td>Há 2 meses</td>
               <td>
-                <Status statusColor="yellow">Em andamento</Status>
+                <Status statuscolor="yellow">Em andamento</Status>
               </td>
             </tr>
             <tr>
@@ -68,7 +68,7 @@ const History = () => {
               <td>20 minutos</td>
               <td>Há 2 meses</td>
               <td>
-                <Status statusColor="red">Interrompido</Status>
+                <Status statuscolor="red">Interrompido</Status>
               </td>
             </tr>
           </tbody>
