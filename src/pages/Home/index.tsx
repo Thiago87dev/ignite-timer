@@ -1,6 +1,6 @@
 import { HandPalm, Play } from 'phosphor-react'
 import { useForm } from 'react-hook-form'
-import { useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import { differenceInSeconds } from 'date-fns'
 import {
   HomeContainter,
@@ -24,11 +24,31 @@ interface Cycle {
   finishedDate?: Date
 }
 
+interface CycleContextType {
+  activeCycle: Cycle | undefined
+  activeCycleId: string | null
+  markCurrentCycleAsFineshed: () => void
+}
+
+export const CycleContext = createContext({} as CycleContextType)
+
 const Home = () => {
   const [cycles, setCycles] = useState<Cycle[]>([])
   const [activeCycleId, setActiveCycleId] = useState<string | null>(null)
 
   const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId)
+
+  function markCurrentCycleAsFineshed() {
+    setCycles((prevState) =>
+      prevState.map((cycle) => {
+        if (cycle.id === activeCycleId) {
+          return { ...cycle, finishedDate: new Date() }
+        } else {
+          return cycle
+        }
+      }),
+    )
+  }
 
   function handlecreateNewCicle(data: NewCicleFormData): void {
     const id = String(new Date().getTime())
@@ -58,20 +78,6 @@ const Home = () => {
     setActiveCycleId(null)
   }
 
-  const currentSeconds = activeCycle ? totalSeconds - amoutSecondsPassed : 0
-
-  const minutesAmoutTime = Math.floor(currentSeconds / 60)
-  const secondsAmoutTime = currentSeconds % 60
-
-  const minutes = String(minutesAmoutTime).padStart(2, '0')
-  const seconds = String(secondsAmoutTime).padStart(2, '0')
-
-  useEffect(() => {
-    if (activeCycle) {
-      document.title = `${minutes}:${seconds}`
-    }
-  }, [minutes, seconds, activeCycle])
-
   const task = watch('task')
   const minutesAmout = watch('minutesAmout')
   const isSubmitDisabled = !task || !minutesAmout
@@ -79,12 +85,12 @@ const Home = () => {
   return (
     <HomeContainter>
       <form onSubmit={handleSubmit(handlecreateNewCicle)}>
-        <NewCycleForm />
-        <Countdown
-          activeCycleId={activeCycleId}
-          setCycles={setCycles}
-          activeCycle={activeCycle}
-        />
+        <CycleContext.Provider
+          value={{ activeCycle, activeCycleId, markCurrentCycleAsFineshed }}
+        >
+          <NewCycleForm />
+          <Countdown />
+        </CycleContext.Provider>
 
         {activeCycle ? (
           <StopCountdownButton onClick={handleInterruptCycle} type="button">

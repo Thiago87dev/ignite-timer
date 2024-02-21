@@ -1,18 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { CountDownContainer, Separator } from './styles'
 import { differenceInSeconds } from 'date-fns'
+import { CycleContext } from '../..'
 
-interface ContdownProps {
-  activeCycle: any
-  setCycles: any
-  activeCycleId: any
-}
-
-const Countdown = ({
-  activeCycle,
-  setCycles,
-  activeCycleId,
-}: ContdownProps) => {
+const Countdown = () => {
+  const { activeCycle, activeCycleId, markCurrentCycleAsFineshed } =
+    useContext(CycleContext)
   const [amoutSecondsPassed, setAmoutSecondsPassed] = useState(0)
 
   const totalSeconds = activeCycle ? activeCycle.minutesAmout * 60 : 0
@@ -27,15 +20,7 @@ const Countdown = ({
         )
 
         if (secondsDifference >= totalSeconds) {
-          setCycles((prevState) =>
-            prevState.map((cycle) => {
-              if (cycle.id === activeCycleId) {
-                return { ...cycle, finishedDate: new Date() }
-              } else {
-                return cycle
-              }
-            }),
-          )
+          markCurrentCycleAsFineshed()
           setAmoutSecondsPassed(totalSeconds)
 
           clearInterval(interval)
@@ -47,7 +32,21 @@ const Countdown = ({
     return () => {
       clearInterval(interval)
     }
-  }, [activeCycle, totalSeconds, activeCycleId])
+  }, [activeCycle, totalSeconds, activeCycleId, markCurrentCycleAsFineshed])
+
+  const currentSeconds = activeCycle ? totalSeconds - amoutSecondsPassed : 0
+
+  const minutesAmoutTime = Math.floor(currentSeconds / 60)
+  const secondsAmoutTime = currentSeconds % 60
+
+  const minutes = String(minutesAmoutTime).padStart(2, '0')
+  const seconds = String(secondsAmoutTime).padStart(2, '0')
+
+  useEffect(() => {
+    if (activeCycle) {
+      document.title = `${minutes}:${seconds}`
+    }
+  }, [minutes, seconds, activeCycle])
 
   return (
     <CountDownContainer>
